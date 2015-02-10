@@ -23,11 +23,13 @@
    "name":"Product Expense",
    "author":"Kevin Kong",
    "description":"",
-   "depends":["hr","hr_expense"],
+   "depends":["base","hr","hr_expense"],
    "data":[
+	   "security/product_expense_security.xml",
+	   "security/ir.model.access.csv",
 	   "product_expense_view.xml",
 	   "product_expense_data.xml",
-	   "product_expense_workflow.xml"
+	   "product_expense_workflow.xml",
 	   ],
    "installable":True,
    "category":"hr",

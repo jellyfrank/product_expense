@@ -8,12 +8,12 @@
 						<field name="arch" type="xml">
 								<form string="Product Expense">
 										<header>
-												<button name="confirm" states="draft"  string="Submit" type="workflow" class="oe_highlight"/>
-												<button name="validate" states="confirm" string="Approve" type="workflow" class="oe_highlight"/>
-												<button name="do_transfer" states="accepted" string="Transfer" type="workflow" class="oe_highlight"/>
+												<button name="confirm" states="draft"  string="Submit" type="workflow" class="oe_highlight" groups="product_expense.group_product_expense_user"/>
+												<button name="validate" states="confirm" string="Approve" type="workflow" class="oe_highlight" groups="product_expense.group_product_expense_supervisor"/>
+												<button name="do_transfer" states="accepted" string="Transfer" type="workflow" class="oe_highlight" groups="product_expense.group_product_expense_manager"/>
 												<!--<button name="test" states="waiting" string="Create Delivery" type="object" class="oe_highlight"/>-->
 												
-												<button name="refuse" states="confirm,accepted" string="Refuse" type="workflow" class="oe_highlight"/>
+												<button name="refuse" states="confirm,accepted" string="Refuse" type="workflow" class="oe_highlight" groups="product_expense.group_product_expense_supervisor"/>
 												<field name="state" widget="statusbar" statusbar_visible="draft,confirm,accepted,waiting,done"/>
 										</header>
 										<sheet>
