@@ -1,0 +1,247 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* product_expense
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-02-09 01:57+0000\n"
+"PO-Revision-Date: 2015-02-09 10:04+0800\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: product_expense
+#: selection:product.expense,state:0
+msgid "Accepted"
+msgstr "受理"
+
+#. module: product_expense
+#: view:product.expense:product_expense.product_expense_form_view
+msgid "Approve"
+msgstr "审核"
+
+#. module: product_expense
+#: field:product.expense.line,comment:0
+msgid "Comment"
+msgstr "备注"
+
+#. module: product_expense
+#: selection:product.expense,state:0
+msgid "Confirm"
+msgstr "确认"
+
+#. module: product_expense
+#: field:product.expense,create_uid:0 field:product.expense.line,create_uid:0
+msgid "Created by"
+msgstr "创建"
+
+#. module: product_expense
+#: field:product.expense,create_date:0
+#: field:product.expense.line,create_date:0
+msgid "Created on"
+msgstr "创建于"
+
+#. module: product_expense
+#: field:product.expense,date:0
+msgid "Date"
+msgstr "日期"
+
+#. module: product_expense
+#: field:product.expense,department:0
+msgid "Department"
+msgstr "部门"
+
+#. module: product_expense
+#: selection:product.expense,state:0
+msgid "Done"
+msgstr "完成"
+
+#. module: product_expense
+#: selection:product.expense,state:0
+msgid "Draft"
+msgstr "草稿"
+
+#. module: product_expense
+#: field:product.expense,staff:0
+msgid "Employee"
+msgstr "员工"
+
+#. module: product_expense
+#: model:stock.location,name:product_expense.stock_location_product_expense
+msgid "Expense"
+msgstr "费用"
+
+#. module: product_expense
+#: field:product.expense.line,expense_date:0
+msgid "Expense Date"
+msgstr "费用日期"
+
+#. module: product_expense
+#: view:product.expense:product_expense.product_expense_form_view
+msgid "Expense Lines"
+msgstr "费用明细"
+
+#. module: product_expense
+#: field:hr.department,expense_location:0
+msgid "Expense Location"
+msgstr "费用库位"
+
+#. module: product_expense
+#: field:product.expense.line,expense_id:0
+msgid "Expense_id"
+msgstr "费用id"
+
+#. module: product_expense
+#: view:product.expense:product_expense.product_expense_form_view
+#: field:product.expense,note:0
+msgid "Free Notes"
+msgstr "自由备注"
+
+#. module: product_expense
+#: field:product.expense,id:0 field:product.expense.line,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: product_expense
+#: field:product.expense,write_uid:0 field:product.expense.line,write_uid:0
+msgid "Last Updated by"
+msgstr "最后更新者"
+
+#. module: product_expense
+#: field:product.expense,write_date:0 field:product.expense.line,write_date:0
+msgid "Last Updated on"
+msgstr "最后更新于"
+
+#. module: product_expense
+#: field:product.expense,name:0
+msgid "Name"
+msgstr "单号"
+
+#. module: product_expense
+#: view:product.expense:product_expense.product_expense_form_view
+msgid "Notes"
+msgstr "备注"
+
+#. module: product_expense
+#: field:product.expense.line,price:0
+msgid "Price"
+msgstr "价格"
+
+#. module: product_expense
+#: model:ir.actions.act_window,name:product_expense.action_product_expense
+msgid "Prodcut Expense"
+msgstr "产品费用"
+
+#. module: product_expense
+#: field:product.expense.line,product:0
+msgid "Product"
+msgstr "产品"
+
+#. module: product_expense
+#: code:addons/product_expense/product_expense.py:90
+#, python-format
+msgid "Product  has not enough quantity."
+msgstr "产品没有足够的库存！"
+
+#. module: product_expense
+#: model:ir.ui.menu,name:product_expense.menu_product_expense
+#: view:product.expense:product_expense.product_expense_form_view
+#: view:product.expense:product_expense.prouct_expense_tree_view
+msgid "Product Expense"
+msgstr "产品费用"
+
+#. module: product_expense
+#: field:stock.move,product_tmpl_id:0
+msgid "Product Template"
+msgstr "产品模板"
+
+#. module: product_expense
+#: view:product.expense:product_expense.product_expense_form_view
+#: field:product.expense,expense_line:0
+msgid "Products"
+msgstr "产品"
+
+#. module: product_expense
+#: field:product.expense.line,quantity:0
+msgid "Quantity"
+msgstr "数量"
+
+#. module: product_expense
+#: field:product.expense,ref_no:0
+msgid "Ref Delivery"
+msgstr "关联的发货单"
+
+#. module: product_expense
+#: view:product.expense:product_expense.product_expense_form_view
+msgid "Refuse"
+msgstr "拒绝"
+
+#. module: product_expense
+#: selection:product.expense,state:0
+msgid "Refused"
+msgstr "已拒绝"
+
+#. module: product_expense
+#: field:product.expense,state:0
+msgid "Status"
+msgstr "状态"
+
+#. module: product_expense
+#: model:ir.model,name:product_expense.model_stock_move
+msgid "Stock Move"
+msgstr "库存调拨"
+
+#. module: product_expense
+#: view:product.expense:product_expense.product_expense_form_view
+msgid "Submit"
+msgstr "提交"
+
+#. module: product_expense
+#: view:product.expense:product_expense.product_expense_form_view
+msgid "Total"
+msgstr "总"
+
+#. module: product_expense
+#: view:product.expense:product_expense.product_expense_form_view
+msgid "Transfer"
+msgstr "调拨"
+
+#. module: product_expense
+#: field:product.expense.line,price_unit:0
+msgid "Unit"
+msgstr "单位"
+
+#. module: product_expense
+#: selection:product.expense,state:0
+msgid "Waiting"
+msgstr "等待出库"
+
+#. module: product_expense
+#: code:addons/product_expense/product_expense.py:80
+#, python-format
+msgid "You haven't set expense location"
+msgstr "你还没有设置费用库位"
+
+#. module: product_expense
+#: code:addons/product_expense/product_expense.py:108
+#, python-format
+msgid "You must add at least one product!"
+msgstr "你至少添加一个费用产品"
+
+#. module: product_expense
+#: code:addons/product_expense/product_expense.py:118
+#, python-format
+msgid "You must delete the delivery order first!"
+msgstr "你必须先删除关联的发货单！"
+
+#. module: product_expense
+#: code:addons/product_expense/product_expense.py:65
+#, python-format
+msgid "there's no proper location for your department."
+msgstr "没有设置领用人员部门的领用库位"
