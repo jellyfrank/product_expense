@@ -27,7 +27,7 @@ class product_expense(models.Model):
 	
 	name = fields.Char('Name',readonly=True)
 	staff = fields.Many2one('hr.employee','Employee',required=True)
-	department = fields.Many2one('hr.department','Department',required=True)
+	department = fields.Many2one('hr.department','Department',required=True,readonly=True)
 	date = fields.Date('Date')
         expense_line = fields.One2many('product.expense.line','expense_id','Products',readonly=True,states={'draft':[('readonly',False)]})
 	state = fields.Selection(selection=[('draft','Draft'),('confirm','Confirm'),('accepted','Accepted'),('waiting','Waiting'),('done','Done'),('refused','Refused')],string="Status")
