@@ -30,6 +30,7 @@
 	   "product_expense_view.xml",
 	   "product_expense_data.xml",
 	   "product_expense_workflow.xml",
+	   "department_account_view.xml",
 	   ],
    "installable":True,
    "category":"hr",

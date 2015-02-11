@@ -92,6 +92,9 @@
 						<field name="manager_id" position="after">
 							<field name="expense_location"/>
 						</field>
+						<field name="company_id" position="after">
+							<field name="strategy"/>
+						</field>
 					</field>
 				</record>
 		</data>

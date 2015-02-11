@@ -29,7 +29,7 @@ class product_expense(models.Model):
 	staff = fields.Many2one('hr.employee','Employee',required=True)
 	department = fields.Many2one('hr.department','Department',required=True)
 	date = fields.Date('Date')
-	expense_line = fields.One2many('product.expense.line','expense_id','Products')
+        expense_line = fields.One2many('product.expense.line','expense_id','Products',readonly=True,states={'draft':[('readonly',False)]})
 	state = fields.Selection(selection=[('draft','Draft'),('confirm','Confirm'),('accepted','Accepted'),('waiting','Waiting'),('done','Done'),('refused','Refused')],string="Status")
 	amount = fields.Float('Amount',compute="_get_amount")
 	note = fields.Text('Free Notes')
@@ -114,6 +114,11 @@ class product_expense(models.Model):
             val['name'] = self.env['ir.sequence'].get('product.expense')
             return super(product_expense,self).create(val)
 
+        @api.model
+        def write(self,val):
+            return super(product_expense,self).write(val)
+            
+
         @api.one
         def unlink(self):
             if self.ref_no:
@@ -123,6 +128,25 @@ class product_expense(models.Model):
         @api.onchange('staff')
         def _onchange_staff(self):
             self.department = self.staff.department_id
+
+        def do_ship_end(self):
+            self.write({'state':'done'})
+            #correcting the account according to the stratgy.
+            #1.checking if there's one strategy fit department and product category requirement.
+            strategy = self.env['product.expense.account'].search([('department','=',self.staff.department_id.id)])
+            account_obj = self.env['account.move']
+            if len(strategy):
+                for line in self.expense_line:
+                    res = [s_line for s_line in strategy.line_ids if s_line.product_category==line.product.categ_id]
+                    if len(res):
+                        account_move = account_obj.search([('ref','=',self.ref_no.name)])
+                        if account_move:
+                            for a_line in account_move.line_id:
+                                if a_line.product_id == line.product and a_line.credit !=0 and a_line.debit==0:
+                                    a_line.write({'account_id':res[0].in_account.id})
+                                if a_line.product_id == line.product and a_line.debit !=0 and a_line.credit==0:
+                                    a_line.write({'account_id':res[0].out_account.id})
+
             
 
 class product_expense_line(models.Model):
@@ -146,17 +170,24 @@ class product_expense_line(models.Model):
 		self.price_unit = self.product.uom_id
 		self.price = self.product.standard_price
 
+        @api.constrains('quantity','price')
+        def _check_quantity_price(self):
+            if self.quantity==0 or self.price==0:
+                raise ValueError(_('The Quantity Or Price Can not be Zero!'))
+
 class product_hr_department(models.Model):
 	_inherit='hr.department'
 
 	expense_location = fields.Many2one('stock.location','Expense Location',domain=[('usage','=','internal')],required=True)
+        strategy = fields.Many2one('product.expense.account','Strategy')
 
 class product_expense_picking(models.Model):
     _inherit='stock.move'
 
     @api.one
     def action_done(self):
+        res =  super(product_expense_picking,self).action_done()
         expense = self.env['product.expense'].search([('ref_no','=',self.picking_id.id)])
         if expense:
             workflow.trg_validate(self.env.user.id,'product.expense',expense.id,'ship_end',self.env.cr)
-        return super(product_expense_picking,self).action_done()
+        return res 

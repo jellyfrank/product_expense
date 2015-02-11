@@ -51,7 +51,7 @@
 			<field name="wkf_id" ref="wkf_product_expense"/>
 			<field name="name">ship_end</field>
 			<field name="kind">function</field>
-			<field name="action">write({'state':'done'})</field>
+			<field name="action">do_ship_end()</field>
 		</record>
 
 		<record id="act_done" model="workflow.activity">

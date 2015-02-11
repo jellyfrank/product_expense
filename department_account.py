@@ -19,4 +19,19 @@
 #
 ##############################################################################
 
-import product_expense,department_account
+from openerp import fields,api,_,models
+
+class department_account(models.Model):
+    _name="product.expense.account"
+
+    name=fields.Char('Name',required=True)
+    department = fields.Many2one('hr.department','Department',required=True)
+    line_ids = fields.One2many('product.expense.account.line','account_id','Lines')
+
+class department_account_line(models.Model):
+    _name='product.expense.account.line'
+
+    account_id = fields.Many2one('product.expense.account')
+    product_category = fields.Many2one('product.category','Product Category')
+    in_account = fields.Many2one('account.account','In Account')
+    out_account = fields.Many2one('account.account','Out Account')

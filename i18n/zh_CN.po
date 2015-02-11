@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-09 01:57+0000\n"
-"PO-Revision-Date: 2015-02-09 10:04+0800\n"
+"POT-Creation-Date: 2015-02-11 01:43+0000\n"
+"PO-Revision-Date: 2015-02-11 09:45+0800\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,6 +20,11 @@ msgstr ""
 #: selection:product.expense,state:0
 msgid "Accepted"
 msgstr "受理"
+
+#. module: product_expense
+#: field:product.expense.account.line,account_id:0
+msgid "Account id"
+msgstr "科目"
 
 #. module: product_expense
 #: view:product.expense:product_expense.product_expense_form_view
@@ -37,12 +42,17 @@ msgid "Confirm"
 msgstr "确认"
 
 #. module: product_expense
-#: field:product.expense,create_uid:0 field:product.expense.line,create_uid:0
+#: field:product.expense,create_uid:0
+#: field:product.expense.account,create_uid:0
+#: field:product.expense.account.line,create_uid:0
+#: field:product.expense.line,create_uid:0
 msgid "Created by"
 msgstr "创建"
 
 #. module: product_expense
 #: field:product.expense,create_date:0
+#: field:product.expense.account,create_date:0
+#: field:product.expense.account.line,create_date:0
 #: field:product.expense.line,create_date:0
 msgid "Created on"
 msgstr "创建于"
@@ -54,6 +64,7 @@ msgstr "日期"
 
 #. module: product_expense
 #: field:product.expense,department:0
+#: field:product.expense.account,department:0
 msgid "Department"
 msgstr "部门"
 
@@ -104,22 +115,44 @@ msgid "Free Notes"
 msgstr "自由备注"
 
 #. module: product_expense
-#: field:product.expense,id:0 field:product.expense.line,id:0
+#: field:product.expense,id:0 field:product.expense.account,id:0
+#: field:product.expense.account.line,id:0 field:product.expense.line,id:0
 msgid "ID"
 msgstr "ID"
 
 #. module: product_expense
-#: field:product.expense,write_uid:0 field:product.expense.line,write_uid:0
+#: field:product.expense.account.line,in_account:0
+msgid "In Account"
+msgstr "入库科目"
+
+#. module: product_expense
+#: field:product.expense,write_uid:0 field:product.expense.account,write_uid:0
+#: field:product.expense.account.line,write_uid:0
+#: field:product.expense.line,write_uid:0
 msgid "Last Updated by"
 msgstr "最后更新者"
 
 #. module: product_expense
-#: field:product.expense,write_date:0 field:product.expense.line,write_date:0
+#: field:product.expense,write_date:0
+#: field:product.expense.account,write_date:0
+#: field:product.expense.account.line,write_date:0
+#: field:product.expense.line,write_date:0
 msgid "Last Updated on"
 msgstr "最后更新于"
 
 #. module: product_expense
-#: field:product.expense,name:0
+#: view:product.expense.account:product_expense.product_expense_account_form_view
+#: field:product.expense.account,line_ids:0
+msgid "Lines"
+msgstr "明细"
+
+#. module: product_expense
+#: model:res.groups,name:product_expense.group_product_expense_manager
+msgid "Manager"
+msgstr "经理"
+
+#. module: product_expense
+#: field:product.expense,name:0 field:product.expense.account,name:0
 msgid "Name"
 msgstr "单号"
 
@@ -127,6 +160,11 @@ msgstr "单号"
 #: view:product.expense:product_expense.product_expense_form_view
 msgid "Notes"
 msgstr "备注"
+
+#. module: product_expense
+#: field:product.expense.account.line,out_account:0
+msgid "Out Account"
+msgstr "出库科目"
 
 #. module: product_expense
 #: field:product.expense.line,price:0
@@ -144,22 +182,31 @@ msgid "Product"
 msgstr "产品"
 
 #. module: product_expense
-#: code:addons/product_expense/product_expense.py:90
+#: code:addons/product_expense/product_expense.py:92
 #, python-format
 msgid "Product  has not enough quantity."
 msgstr "产品没有足够的库存！"
 
 #. module: product_expense
+#: field:product.expense.account.line,product_category:0
+msgid "Product Category"
+msgstr "产品类别"
+
+#. module: product_expense
+#: model:ir.module.category,name:product_expense.module_category_product_expense
 #: model:ir.ui.menu,name:product_expense.menu_product_expense
 #: view:product.expense:product_expense.product_expense_form_view
 #: view:product.expense:product_expense.prouct_expense_tree_view
+#: view:product.expense.account:product_expense.product_expense_account_tree
 msgid "Product Expense"
 msgstr "产品费用"
 
 #. module: product_expense
-#: field:stock.move,product_tmpl_id:0
-msgid "Product Template"
-msgstr "产品模板"
+#: model:ir.actions.act_window,name:product_expense.actions_product_expense_account
+#: model:ir.ui.menu,name:product_expense.menu_product_expense_account
+#: view:product.expense.account:product_expense.product_expense_account_form_view
+msgid "Product Expense Account"
+msgstr "产品费用科目"
 
 #. module: product_expense
 #: view:product.expense:product_expense.product_expense_form_view
@@ -198,9 +245,25 @@ msgid "Stock Move"
 msgstr "库存调拨"
 
 #. module: product_expense
+#: field:hr.department,strategy:0
+msgid "Strategy"
+msgstr "策略"
+
+#. module: product_expense
 #: view:product.expense:product_expense.product_expense_form_view
 msgid "Submit"
 msgstr "提交"
+
+#. module: product_expense
+#: model:res.groups,name:product_expense.group_product_expense_supervisor
+msgid "Supervisor"
+msgstr "主管"
+
+#. module: product_expense
+#: code:addons/product_expense/product_expense.py:176
+#, python-format
+msgid "The Quantity Or Price Can not be Zero!"
+msgstr "产品数量或单价不能为0"
 
 #. module: product_expense
 #: view:product.expense:product_expense.product_expense_form_view
@@ -218,30 +281,40 @@ msgid "Unit"
 msgstr "单位"
 
 #. module: product_expense
+#: model:res.groups,name:product_expense.group_product_expense_user
+msgid "User"
+msgstr "用户"
+
+#. module: product_expense
 #: selection:product.expense,state:0
 msgid "Waiting"
 msgstr "等待出库"
 
 #. module: product_expense
-#: code:addons/product_expense/product_expense.py:80
+#: code:addons/product_expense/product_expense.py:81
 #, python-format
 msgid "You haven't set expense location"
 msgstr "你还没有设置费用库位"
 
 #. module: product_expense
-#: code:addons/product_expense/product_expense.py:108
+#: code:addons/product_expense/product_expense.py:110
 #, python-format
 msgid "You must add at least one product!"
 msgstr "你至少添加一个费用产品"
 
 #. module: product_expense
-#: code:addons/product_expense/product_expense.py:118
+#: code:addons/product_expense/product_expense.py:125
 #, python-format
 msgid "You must delete the delivery order first!"
 msgstr "你必须先删除关联的发货单！"
 
 #. module: product_expense
-#: code:addons/product_expense/product_expense.py:65
+#: view:product.expense.account:product_expense.product_expense_account_form_view
+msgid "lines"
+msgstr "明细"
+
+#. module: product_expense
+#: code:addons/product_expense/product_expense.py:66
 #, python-format
 msgid "there's no proper location for your department."
 msgstr "没有设置领用人员部门的领用库位"
