@@ -33,5 +33,5 @@ class department_account_line(models.Model):
 
     account_id = fields.Many2one('product.expense.account')
     product_category = fields.Many2one('product.category','Product Category')
-    in_account = fields.Many2one('account.account','In Account')
-    out_account = fields.Many2one('account.account','Out Account')
+    in_account = fields.Many2one('account.account','Credit')
+    out_account = fields.Many2one('account.account','Debit')

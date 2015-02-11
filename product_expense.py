@@ -21,15 +21,16 @@
 
 from openerp import api,models,_,fields
 from openerp import workflow
+from openerp.exceptions import except_orm
 
 class product_expense(models.Model):
 	_name='product.expense'
 	
 	name = fields.Char('Name',readonly=True)
 	staff = fields.Many2one('hr.employee','Employee',required=True)
-	department = fields.Many2one('hr.department','Department',required=True,readonly=True)
+	department = fields.Many2one('hr.department','Department')
 	date = fields.Date('Date')
-        expense_line = fields.One2many('product.expense.line','expense_id','Products',readonly=True,states={'draft':[('readonly',False)]})
+        expense_line = fields.One2many('product.expense.line','expense_id','Products',states={'draft':[('readonly',False)],'confirm':[('readonly',True)],'accepted':[('readonly',True)],'waiting':[('readonly',True)],'done':[('readonly',True)],'refused':[('readonly',True)]})
 	state = fields.Selection(selection=[('draft','Draft'),('confirm','Confirm'),('accepted','Accepted'),('waiting','Waiting'),('done','Done'),('refused','Refused')],string="Status")
 	amount = fields.Float('Amount',compute="_get_amount")
 	note = fields.Text('Free Notes')
@@ -63,7 +64,7 @@ class product_expense(models.Model):
 		picking_type_obj = self.env['stock.picking.type']
 		picking_type = picking_type_obj.search([('default_location_src_id','=',self.staff.department_id.expense_location.id),('code','=','outgoing')])
 		if not picking_type:
-			raise ValueError(_("there's no proper location for your department."))
+                    raise except_orm(_('Warning!'),_("there's no proper location for your department."))
 
                 if not self.ref_no:
                     picking_id = picking_obj.create({
@@ -78,7 +79,7 @@ class product_expense(models.Model):
 		stock_quant_obj = self.env['stock.quant']
                 expense_loc = self.env['stock.location'].search([('name','=','Expense')])
                 if not expense_loc:
-                    raise ValueError(_("You haven't set expense location"))
+                    raise except_orm(_('Warning!'),_("You haven't set expense location"))
 		for line in self.expense_line:
 			#query per product's stock quant.
 			quants = stock_quant_obj.search([('product_id','=',line.product.id),('location_id.usage','=','internal')])
@@ -89,7 +90,7 @@ class product_expense(models.Model):
 			if not qty:
                             #if picking_id:
 			    #	picking_obj.unlink(picking_id)
-                            raise ValueError(_('Product '+line.product.name+' has not enough quantity.'))
+                            raise except_orm(_('Warning!'),_('Product '+line.product.name+' has not enough quantity.'))
 
 			stock_move_obj.create({
 				'picking_id':picking_id.id,
@@ -107,27 +108,30 @@ class product_expense(models.Model):
 	@api.constrains('expense_line')
 	def _check_expense_line(self):
 		if not len(self.expense_line):
-			raise ValueError(_('You must add at least one product!'))
+                    raise except_orm(_('Warning!'),_('You must add at least one product!'))
 
         @api.model
         def create(self,val):
             val['name'] = self.env['ir.sequence'].get('product.expense')
             return super(product_expense,self).create(val)
 
-        @api.model
-        def write(self,val):
-            return super(product_expense,self).write(val)
-            
-
         @api.one
         def unlink(self):
             if self.ref_no:
-                raise ValueError(_('You must delete the delivery order first!'))
+                raise except_orm(_('Warning!'),_('You must delete the delivery order first!'))
             return super(product_expense,self).unlink()
 
         @api.onchange('staff')
         def _onchange_staff(self):
             self.department = self.staff.department_id
+
+        @api.one
+        def copy(self):
+             p =  super(product_expense,self).copy()
+             p.ref_no=None
+             p.expense_line = self.expense_line.copy()
+             p.state='draft'
+             return p
 
         def do_ship_end(self):
             self.write({'state':'done'})
@@ -135,17 +139,25 @@ class product_expense(models.Model):
             #1.checking if there's one strategy fit department and product category requirement.
             strategy = self.env['product.expense.account'].search([('department','=',self.staff.department_id.id)])
             account_obj = self.env['account.move']
+            account_moves = account_obj.search([('ref','=',self.ref_no.name)])
             if len(strategy):
                 for line in self.expense_line:
                     res = [s_line for s_line in strategy.line_ids if s_line.product_category==line.product.categ_id]
                     if len(res):
-                        account_move = account_obj.search([('ref','=',self.ref_no.name)])
-                        if account_move:
-                            for a_line in account_move.line_id:
-                                if a_line.product_id == line.product and a_line.credit !=0 and a_line.debit==0:
-                                    a_line.write({'account_id':res[0].in_account.id})
-                                if a_line.product_id == line.product and a_line.debit !=0 and a_line.credit==0:
-                                    a_line.write({'account_id':res[0].out_account.id})
+                        if len(account_moves):
+                            for account_move in account_moves:
+                                for a_line in account_move.line_id:
+                                    if a_line.product_id == line.product and a_line.credit !=0 and a_line.debit==0:
+                                        a_line.write({'account_id':res[0].in_account.id})
+                                    if a_line.product_id == line.product and a_line.debit !=0 and a_line.credit==0:
+                                        a_line.write({'account_id':res[0].out_account.id})
+
+        #@api.one
+        #def test(self):
+        #    account_obj = self.env['account.move']
+        #    account_moves = account_obj.search([('ref','=',self.ref_no.name)])
+        #    print account_moves.line_id
+            
 
             
 
@@ -161,6 +173,10 @@ class product_expense_line(models.Model):
 	quantity = fields.Float('Quantity')
 	subtotal = fields.Float('Subtotal',compute='_get_subtotal')
 
+        @api.onchange('quantity')
+        def _onchange_quantity(self):
+            self.subtotal = self.price * self.quantity
+
 	@api.one
 	def _get_subtotal(self):
 	    self.subtotal = self.price * self.quantity
@@ -173,7 +189,7 @@ class product_expense_line(models.Model):
         @api.constrains('quantity','price')
         def _check_quantity_price(self):
             if self.quantity==0 or self.price==0:
-                raise ValueError(_('The Quantity Or Price Can not be Zero!'))
+                raise except_orm(_('Warning!'),_('The Quantity Or Price Can not be Zero!'))
 
 class product_hr_department(models.Model):
 	_inherit='hr.department'
@@ -182,12 +198,13 @@ class product_hr_department(models.Model):
         strategy = fields.Many2one('product.expense.account','Strategy')
 
 class product_expense_picking(models.Model):
-    _inherit='stock.move'
+    _inherit='stock.picking'
 
     @api.one
-    def action_done(self):
-        res =  super(product_expense_picking,self).action_done()
-        expense = self.env['product.expense'].search([('ref_no','=',self.picking_id.id)])
-        if expense:
-            workflow.trg_validate(self.env.user.id,'product.expense',expense.id,'ship_end',self.env.cr)
+    def do_transfer(self):
+        res =  super(product_expense_picking,self).do_transfer()
+        if res:
+            expense = self.env['product.expense'].search([('ref_no','=',self.id)])
+            if expense:
+                workflow.trg_validate(self.env.user.id,'product.expense',expense.id,'ship_end',self.env.cr)
         return res 

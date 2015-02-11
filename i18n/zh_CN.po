@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-11 01:43+0000\n"
-"PO-Revision-Date: 2015-02-11 09:45+0800\n"
+"POT-Creation-Date: 2015-02-11 07:35+0000\n"
+"PO-Revision-Date: 2015-02-11 15:35+0800\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -58,9 +58,19 @@ msgid "Created on"
 msgstr "创建于"
 
 #. module: product_expense
+#: field:product.expense.account.line,in_account:0
+msgid "Credit"
+msgstr "贷方"
+
+#. module: product_expense
 #: field:product.expense,date:0
 msgid "Date"
 msgstr "日期"
+
+#. module: product_expense
+#: field:product.expense.account.line,out_account:0
+msgid "Debit"
+msgstr "借方"
 
 #. module: product_expense
 #: field:product.expense,department:0
@@ -121,11 +131,6 @@ msgid "ID"
 msgstr "ID"
 
 #. module: product_expense
-#: field:product.expense.account.line,in_account:0
-msgid "In Account"
-msgstr "入库科目"
-
-#. module: product_expense
 #: field:product.expense,write_uid:0 field:product.expense.account,write_uid:0
 #: field:product.expense.account.line,write_uid:0
 #: field:product.expense.line,write_uid:0
@@ -162,9 +167,9 @@ msgid "Notes"
 msgstr "备注"
 
 #. module: product_expense
-#: field:product.expense.account.line,out_account:0
-msgid "Out Account"
-msgstr "出库科目"
+#: model:ir.model,name:product_expense.model_stock_picking
+msgid "Picking List"
+msgstr "装箱单"
 
 #. module: product_expense
 #: field:product.expense.line,price:0
@@ -182,7 +187,7 @@ msgid "Product"
 msgstr "产品"
 
 #. module: product_expense
-#: code:addons/product_expense/product_expense.py:92
+#: code:addons/product_expense/product_expense.py:93
 #, python-format
 msgid "Product  has not enough quantity."
 msgstr "产品没有足够的库存！"
@@ -260,7 +265,7 @@ msgid "Supervisor"
 msgstr "主管"
 
 #. module: product_expense
-#: code:addons/product_expense/product_expense.py:176
+#: code:addons/product_expense/product_expense.py:192
 #, python-format
 msgid "The Quantity Or Price Can not be Zero!"
 msgstr "产品数量或单价不能为0"
@@ -291,19 +296,30 @@ msgid "Waiting"
 msgstr "等待出库"
 
 #. module: product_expense
-#: code:addons/product_expense/product_expense.py:81
+#: code:addons/product_expense/product_expense.py:67
+#: code:addons/product_expense/product_expense.py:82
+#: code:addons/product_expense/product_expense.py:93
+#: code:addons/product_expense/product_expense.py:111
+#: code:addons/product_expense/product_expense.py:121
+#: code:addons/product_expense/product_expense.py:192
+#, python-format
+msgid "Warning!"
+msgstr "警告"
+
+#. module: product_expense
+#: code:addons/product_expense/product_expense.py:82
 #, python-format
 msgid "You haven't set expense location"
 msgstr "你还没有设置费用库位"
 
 #. module: product_expense
-#: code:addons/product_expense/product_expense.py:110
+#: code:addons/product_expense/product_expense.py:111
 #, python-format
 msgid "You must add at least one product!"
 msgstr "你至少添加一个费用产品"
 
 #. module: product_expense
-#: code:addons/product_expense/product_expense.py:125
+#: code:addons/product_expense/product_expense.py:121
 #, python-format
 msgid "You must delete the delivery order first!"
 msgstr "你必须先删除关联的发货单！"
@@ -314,7 +330,7 @@ msgid "lines"
 msgstr "明细"
 
 #. module: product_expense
-#: code:addons/product_expense/product_expense.py:66
+#: code:addons/product_expense/product_expense.py:67
 #, python-format
 msgid "there's no proper location for your department."
 msgstr "没有设置领用人员部门的领用库位"
