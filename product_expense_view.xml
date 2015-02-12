@@ -39,9 +39,9 @@
 																								<field name="expense_date"/>
 																								<field name="comment"/>
 																								<field name="price_unit"/>
-																								<field name="price" invisible="1"/>
+																								<field name="price"/>
 																								<field name="quantity" sum="Total"/>
-																								<field name="subtotal" sum="Total" invisible="1"/>
+																								<field name="subtotal" sum="Total"/>
 																						</tree>
 																				</field>
 																				<group>

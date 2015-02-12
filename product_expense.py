@@ -193,6 +193,17 @@ class product_expense_line(models.Model):
             if self.quantity==0 or self.price==0:
                 raise except_orm(_('Warning!'),_('The Quantity Or Price Can not be Zero!'))
 
+        @api.multi
+        def write(self,val):
+            if val.get('price'):
+                del val['price']
+            return super(product_expense_line,self).write(val)
+
+        @api.model
+        def create(self,val):
+            val['price'] = self.env['product.product'].browse(val['product']).standard_price
+            return super(product_expense_line,self).create(val)
+
 class product_hr_department(models.Model):
 	_inherit='hr.department'
 
