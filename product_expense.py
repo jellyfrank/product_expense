@@ -82,15 +82,15 @@ class product_expense(models.Model):
                     raise except_orm(_('Warning!'),_("You haven't set expense location"))
 		for line in self.expense_line:
 			#query per product's stock quant.
-			quants = stock_quant_obj.search([('product_id','=',line.product.id),('location_id.usage','=','internal')])
-			qty=0
-			for quant in quants:
-				qty +=quant.qty
+			#quants = stock_quant_obj.search([('product_id','=',line.product.id),('location_id.usage','=','internal')])
+			#qty=0
+		#	for quant in quants:
+		#		qty +=quant.qty
 
-			if not qty:
+		#	if not qty:
                             #if picking_id:
 			    #	picking_obj.unlink(picking_id)
-                            raise except_orm(_('Warning!'),_('Product '+line.product.name+' has not enough quantity.'))
+                 #           raise except_orm(_('Warning!'),_('Product '+line.product.name+' has not enough quantity.'))
 
 			stock_move_obj.create({
 				'picking_id':picking_id.id,
@@ -102,6 +102,8 @@ class product_expense(models.Model):
 				'location_id':self.staff.department_id.expense_location.id,
 				'location_dest_id':expense_loc.id,
 				})
+                #do transfter
+                self.ref_no.action_confirm()
                 return True
 
 	@api.one
