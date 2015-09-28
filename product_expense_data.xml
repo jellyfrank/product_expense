@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record id="stock_location_product_expense" model="stock.location">
+			<field name="name">Expense</field>
+			<field name="location_id" ref="stock.stock_location_locations_virtual"/>
+			<field name="usage">production</field>
+			<field name="company_id"></field>
+		</record>
+		<record id="ir_sequence_type_product_expense" model="ir.sequence.type">
+			<field name="name">Product Expense</field>
+			<field name="code">product.expense</field>
+		</record>
+		<record id="ir_sequence_product_expense" model="ir.sequence">
+			<field name="name">Product Expense</field>
+			<field name="prefix">PE%(year)s%(month)s%(day)s</field>
+			<field name="padding">4</field>
+			<field name="code">product.expense</field>
+		</record>
+	</data>
+</openerp>

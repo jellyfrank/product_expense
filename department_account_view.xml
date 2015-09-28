@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record id="product_expense_account_form_view" model="ir.ui.view">
+			<field name="name">product expense account</field>
+			<field name="model">product.expense.account</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Product Expense Account">
+					<sheet>
+						<h1>
+							<field name="name"/>
+						</h1>
+						<group>
+							<field name="department"/>
+						</group>
+						<group>
+							<notebook>
+								<page string="Lines">
+									<field name="line_ids">
+										<tree string="lines" editable="bottom">
+											<field name="account_id" invisible="1"/>
+											<field name="product_category" />
+											<field name="in_account"/>
+											<field name="out_account"/>
+										</tree>
+									</field>
+								</page>
+							</notebook>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="product_expense_account_tree">			
+			<field name="name">product expense account</field>
+			<field name="model">product.expense.account</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Product Expense">
+					<field name="name"/>
+					<field name="department"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="actions_product_expense_account">
+			<field name="name">Product Expense Account</field>
+			<field name="res_model">product.expense.account</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="menu_product_expense_account" name="Product Expense Account" action="actions_product_expense_account" parent="hr.menu_hr_configuration" />
+	</data>
+</openerp>

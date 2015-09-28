@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+		<data>
+				<record model="ir.ui.view" id="product_expense_form_view">
+						<field name="name">product.expense</field>
+						<field name="model">product.expense</field>
+						<field name="type">form</field>
+						<field name="arch" type="xml">
+								<form string="Product Expense">
+										<header>
+												<button name="confirm" states="draft"  string="Submit" type="workflow" class="oe_highlight" groups="product_expense.group_product_expense_user"/>
+												<button name="validate" states="confirm" string="Approve" type="workflow" class="oe_highlight" groups="product_expense.group_product_expense_supervisor"/>
+												<button name="do_transfer" states="accepted" string="Transfer" type="workflow" class="oe_highlight" groups="product_expense.group_product_expense_manager"/>
+												<!--	<button name="test" string="Test" type="object" class="oe_highlight"/>-->
+												
+												<button name="refuse" states="confirm,accepted" string="Refuse" type="workflow" class="oe_highlight" groups="product_expense.group_product_expense_supervisor"/>
+												<button name="receive" states="receive" string="Received" type="object" class="oe_highlight" groups="product_expense.group_product_expense_user"/>
+												<field name="state" widget="statusbar" statusbar_visible="draft,confirm,accepted,waiting,receive,done"/>
+										</header>
+										<sheet>
+											<div class="oe_right oe_button_box" name="buttons">
+																<button type="object" name="view_picking" class="oe_stat_button" icon="fa-truck" attrs="{'invisible': [('state', 'not in', ['waiting','receive','done'])]}" string="View Picking" />
+											</div>
+											<div class="oe_title">
+												<h1>
+													<label string="Product Expense" for="name"/>
+													<field name="name" class="oe_inline" readonly="1"/>
+												</h1>
+											</div>										
+														<group>
+																<group>
+																		<field name="staff" readonly="1"/>
+																		<field name="date"/>
+																		<field name="department" readonly="1"/>
+																</group>
+																<!--<group>
+																	<field name="ref_no"/>
+																</group>-->
+														</group>
+														<group>
+																<notebook>
+																		<page string="Products">
+																				<field name="expense_line">
+																						<tree string="Expense Lines" editable="bottom">
+																								<field name="product"/>
+																								<field name="expense_date"/>
+																								<field name="comment"/>
+																								<field name="price_unit"
+																									readonly="1"/>
+																								<field name="price" invisible="1"/>
+																								<field name="quantity" sum="Total"/>
+																								<field name="subtotal" sum="Total" invisible="1"/>
+																						</tree>
+																				</field>
+																				<group>
+																						<div>
+																								<separator string="Notes"/>
+																								<field name="note" placeholder="Free Notes"/>
+																						</div>
+																						<group class="oe_subtotal_footer oe_right">
+																								<field name="amount" widget="monetart" options="{'currency_field':'currency_id'}" class="oe_subtotal_footer_separator" invisible="1"/>
+																						</group>
+																				</group>
+																		</page>
+																</notebook>
+														</group>
+										</sheet>
+										<div class="oe_chatter">
+						                    <field name="message_follower_ids" widget="mail_followers"/>
+						                    <field name="message_ids" widget="mail_thread"/>
+					               		</div>
+								</form>
+						</field>
+				</record>
+
+				<record model="ir.ui.view" id="prouct_expense_tree_view">
+					<field name="name">Product Expense Tree</field>
+					<field name="model">product.expense</field>
+					<field name="arch" type="xml">
+						<tree string="Product Expense">
+							<field name="name"/>
+							<field name="staff"/>
+							<field name="department"/>
+							<field name="date"/>
+							<field name="state"/>
+						</tree>
+					</field>
+				</record>
+
+				<record model="ir.ui.view" id="product_expense_search_view">
+					<field name="name">Product Expense Search</field>
+					<field name="model">product.expense</field>
+					<field name="arch" type="xml">
+						<search string="Product Expense Search">
+							<filter name="state_confirm" string="confirmed" domain="[('state','=','confirm')]"/>
+							<group expand="0" string="Group by...">
+								<filter string="State" domain="[]" context="{'group_by':'state'}"/>
+							</group>
+						</search>
+					</field>
+				</record>
+
+				<record model="ir.actions.act_window" id="action_product_expense">
+						<field name="name">Prodcut Expense</field>
+						<field name="res_model">product.expense</field>
+						<field name="view_mode">tree,form</field>
+						<!--	<field name="view_id" ref="product_expense_form_view"/>-->
+						<field name="context">{'search_default_filter_state_confirm':'confirm'}</field>
+				</record>
+
+				<menuitem name="Product Expense" action="action_product_expense" parent="hr_expense.next_id_49" id="menu_product_expense" />
+
+				<record model="ir.ui.view" id="product_expense_hr_department">
+					<field name="name">HR Department</field>
+					<field name="model">hr.department</field>
+					<field name="inherit_id" ref="hr.view_department_form"/>
+					<field name="arch" type="xml">
+						<field name="manager_id" position="after">
+							<field name="expense_location"/>
+						</field>
+						<field name="company_id" position="after">
+							<field name="strategy"/>
+						</field>
+					</field>
+				</record>
+
+				<record model="ir.ui.view" id="product_expense_line_tree_view">
+					<field name="name">Product Expense Line</field>
+					<field name="model">product.expense.line</field>
+					<field name="arch" type="xml">
+						<tree string="Product Expense Line">
+							<field name="expense_id"/>
+							<field name="product"/>
+							<field name="expense_date"/>
+							<field name="quantity"/>
+							<field name="price_unit"/>
+							<field name="staff"/>	
+							<field name="department"/>
+							<field name="state"/>
+						</tree>
+					</field>
+				</record>
+
+				<record model="ir.actions.act_window" id="action_product_expense_line_tree">
+					<field name="name">Product Expense Line</field>
+					<field name="res_model">product.expense.line</field>
+					<field name="view_mode">tree,form</field>
+				</record>
+
+				<menuitem name="Product Expense Line" action="action_product_expense_line_tree" parent="hr_expense.next_id_49" id="menu_product_expense_line" />
+		</data>
+</openerp>
