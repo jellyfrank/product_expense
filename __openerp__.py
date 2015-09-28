@@ -21,7 +21,10 @@
 
 {
    "name":"Product Expense",
+<<<<<<< HEAD
    "version":"2.0",
+=======
+>>>>>>> f619c586ca39770e321e0c9d06b854b7bb97e785
    "author":"Kevin Kong",
    "description":"",
    "depends":["base","hr","hr_expense"],
